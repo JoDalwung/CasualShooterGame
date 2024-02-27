@@ -15,6 +15,7 @@
 ![bandicam 2024-02-28 01-20-33-292](https://github.com/JoDalwung/CasualShooterGame/assets/47405389/f378f8c0-7d10-4439-ac66-4958120e8956)
 
 
+버전 : unity - 2021.3.33f1 / BaseFrameWork - 0.0.0
 
 달성목표 : "슬레이어키우기" 미니게임 이벤트에 출시된 컨탠츠를 확장하여 구현해보는게 목표
 
