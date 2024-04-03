@@ -8,11 +8,11 @@ public class Scene : MonoBehaviour
 {
     public enum SceneName
     { 
-        // 여기이름이랑 해당 씬스크립트 이름이랑 동일시할 예정 
+        // 여기이름이랑 해당 씬스크립트 이름이랑 동일시
         MainScene,
         Game_1_Scene,
-        Game_2_Scene,
-        Game_3_Scene,
+        //Game_2_Scene,
+        //Game_3_Scene,
     }
 
     IEnumerator _cActiveScene(string SceneName)
