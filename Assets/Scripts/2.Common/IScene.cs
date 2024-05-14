@@ -20,7 +20,6 @@ public class IScene : MonoBehaviour
             yield return null;
         }        
     }
-
     protected void ActiveScene(SceneName sceneName)
     {
         StartCoroutine(_cActiveScene(sceneName.ToString()));

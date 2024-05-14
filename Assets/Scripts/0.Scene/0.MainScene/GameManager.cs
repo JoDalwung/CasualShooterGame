@@ -13,8 +13,7 @@ public class GameManager : IScene
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        PlayerInfo.Instance.Name = "Player";     
+        DontDestroyOnLoad(gameObject);      
     }
 
     private void Start() => ActiveScene(EntryScene);

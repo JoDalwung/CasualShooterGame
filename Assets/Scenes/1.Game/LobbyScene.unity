@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1507683821453381920, guid: 365fc73c847c36448bafaa7df68969f8, type: 3}
+      propertyPath: m_Name
+      value: 1.MainCamera
+      objectReference: {fileID: 0}
     - target: {fileID: 2510535179589503354, guid: 365fc73c847c36448bafaa7df68969f8, type: 3}
       propertyPath: m_Name
       value: LobbyContent
