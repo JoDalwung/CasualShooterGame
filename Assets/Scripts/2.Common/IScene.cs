@@ -8,7 +8,8 @@ public class IScene : MonoBehaviour
 {
     public enum SceneName
     { 
-        LobbyScene,       
+        LobbyScene,
+        MainGameScene,
     }
 
     IEnumerator _cActiveScene(string SceneName)

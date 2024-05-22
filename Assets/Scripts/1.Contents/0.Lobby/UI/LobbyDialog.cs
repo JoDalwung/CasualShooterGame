@@ -7,12 +7,15 @@ public class LobbyDialog : IDialog
 {
 
     RectTransform _First_view_rect, _Second_view_rect;
+    RectTransform _Popup_Noti_rect;
 
     Button _Leaderboard_btn;
-    
-
-    RectTransform _Popup_Noti_rect;
+    Button _GameStart_btn;
     Text _Popup_Noti_txt;
+
+
+    public static event System.Action LobbyDialog_GameStartBtn_act;
+
 
     protected override void _OnLoad()
     {
@@ -35,6 +38,10 @@ public class LobbyDialog : IDialog
             if (PlayerInfo.Instance.ScoreList.Count == 0)
                 Show_PopUp_Noti("No Score");
         });
+
+        _GameStart_btn = transform.GetChild(1).GetChild(1).GetComponent<Button>();
+        _GameStart_btn.onClick.AddListener(() => { LobbyDialog_GameStartBtn_act?.Invoke();});
+
 
         _Popup_Noti_rect = _Second_view_rect.GetChild(2).GetComponent<RectTransform>();
         _Popup_Noti_txt = _Popup_Noti_rect.GetChild(1).GetComponent<Text>();

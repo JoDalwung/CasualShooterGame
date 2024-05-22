@@ -6,7 +6,8 @@ public class IDialog : MonoBehaviour
 {
     public enum DialogName
     { 
-        LobbyDialog,    
+        LobbyDialog,
+        MainGameDialog,
     }
 
     // 공용으로 쓸만한 기능 : fade in out
