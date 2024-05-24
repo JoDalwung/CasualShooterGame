@@ -11,17 +11,21 @@ public class GameManager : IScene
 
     public IScene.SceneName EntryScene;
 
-    private void Awake()
+
+    protected override void _OnLoad()
     {
-        DontDestroyOnLoad(gameObject);      
+        base._OnLoad();
+        DontDestroyOnLoad(gameObject);
     }
 
-    private void Start() => ActiveScene(EntryScene);
+    protected override void _OnLoadComplete()
+    {
+        base._OnLoadComplete();
+        ActiveScene(EntryScene , false);
+    }
 
     protected override void _OnEnter() => _AddEvent();
     protected override void _OnExite() => _RemoveEvent();
-
-
 
     // 왠만하면 씬 이동 이벤트는 Dialog event로 날아올거같다.
     void _AddEvent()
@@ -35,7 +39,7 @@ public class GameManager : IScene
         LobbyDialog.LobbyDialog_GameStartBtn_act -= LobbyDialog_LobbyDialog_GameStartBtn_act;
     }
 
-    private void LobbyDialog_LobbyDialog_GameStartBtn_act() => ActiveScene(SceneName.MainGameScene);
+    private void LobbyDialog_LobbyDialog_GameStartBtn_act() => ActiveScene(SceneName.MainGameScene, true);
 
 
 }

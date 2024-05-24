@@ -12,23 +12,58 @@ public class IScene : MonoBehaviour
         MainGameScene,
     }
 
-    IEnumerator _cActiveScene(string SceneName)
+    RectTransform Loading_rect;
+    UnityEngine.UI.Text LoadProgress_txt;
+
+    IEnumerator _cActiveScene(string SceneName, bool Loading = true)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(SceneName);
+
+        asyncLoad.allowSceneActivation = !Loading;
+        float progress = 0;
+        if (Loading)
+            Loading_rect.gameObject.SetActive(true);
+
         while (!asyncLoad.isDone)
         {
-           // Debug.Log(asyncLoad.progress);
-            yield return null;
+            if (Loading)
+            {
+                progress = Mathf.MoveTowards(progress, asyncLoad.progress, Time.deltaTime);
+                LoadProgress_txt.text = $"{progress * 100}%";
+                if (progress >= 0.9f)
+                {
+                    LoadProgress_txt.text = "100%";
+                    asyncLoad.allowSceneActivation = true;
+
+                    yield return new WaitForEndOfFrame();
+                    Loading_rect.gameObject.SetActive(false);
+                }
+                
+                yield return null;
+            }
+            else
+                yield return null;
         }        
     }
-    protected void ActiveScene(SceneName sceneName)
+    protected void ActiveScene(SceneName sceneName, bool Loading = true)
     {
-        StartCoroutine(_cActiveScene(sceneName.ToString()));
+        StartCoroutine(_cActiveScene(sceneName.ToString(), Loading ));
     }
 
+    private void Awake() => _OnLoad();
+    private void Start() => _OnLoadComplete();
     private void OnEnable() => _OnEnter();
     private void OnDisable() => _OnExite();
 
+
+    protected virtual void _OnLoad()
+    {
+        Loading_rect = transform.GetChild(0).GetChild(1).GetComponent<RectTransform>();
+        LoadProgress_txt = Loading_rect.GetChild(1).GetComponent<UnityEngine.UI.Text>();
+        Loading_rect.gameObject.SetActive(false);
+    }
+    protected virtual void _OnLoadComplete()
+    { }
     protected virtual void _OnEnter()
     { }
     protected virtual void _OnExite()
