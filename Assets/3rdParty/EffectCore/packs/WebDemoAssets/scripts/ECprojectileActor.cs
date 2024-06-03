@@ -54,39 +54,33 @@ public class ECprojectileActor : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start ()
-    {
-        if (UImaster)
-        {
-            UiText.text = bombList[bombType].name.ToString();
-        }
-	}
+
 	
 	// Update is called once per frame
 	void Update ()
     {
         //Movement
-        if(Input.GetButton("Horizontal"))
-        {
-            if (Input.GetAxis("Horizontal") < 0)
-            {
-                gameObject.transform.Rotate(Vector3.up, -25 * Time.deltaTime);
-            }
-            else
-            {
-                gameObject.transform.Rotate(Vector3.up, 25 * Time.deltaTime);
-            }
-        }
+        //if(Input.GetButton("Horizontal"))
+        //{
+        //    if (Input.GetAxis("Horizontal") < 0)
+        //    {
+        //        gameObject.transform.Rotate(Vector3.up, -25 * Time.deltaTime);
+        //    }
+        //    else
+        //    {
+        //        gameObject.transform.Rotate(Vector3.up, 25 * Time.deltaTime);
+        //    }
+        //}
 
         //BULLETS
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Switch(-1);
-        }
-        if (Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.E))
-        {
-            Switch(1);
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    Switch(-1);
+        //}
+        //if (Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.E))
+        //{
+        //    Switch(1);
+        //}
 
 	    if(Input.GetButtonDown("Fire1"))
         {
@@ -134,10 +128,10 @@ public class ECprojectileActor : MonoBehaviour {
 
     public void Fire()
     {
-        if(CameraShake)
-        {
-            CameraShakeCaller.ShakeCamera();
-        }
+        //if(CameraShake)
+        //{
+        //    CameraShakeCaller.ShakeCamera();
+        //}
         Instantiate(bombList[bombType].muzzleflare, spawnLocatorMuzzleFlare.position, spawnLocatorMuzzleFlare.rotation);
         //   bombList[bombType].muzzleflare.Play();
 

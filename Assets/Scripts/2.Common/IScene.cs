@@ -32,9 +32,10 @@ public class IScene : MonoBehaviour
                 LoadProgress_txt.text = $"{progress * 100}%";
                 if (progress >= 0.9f)
                 {
+                    // 로딩창 디자인에따라 커스텀
                     LoadProgress_txt.text = "100%";
+                    //
                     asyncLoad.allowSceneActivation = true;
-
                     yield return new WaitForEndOfFrame();
                     Loading_rect.gameObject.SetActive(false);
                 }
