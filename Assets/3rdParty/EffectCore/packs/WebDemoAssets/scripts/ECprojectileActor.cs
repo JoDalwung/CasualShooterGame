@@ -53,11 +53,24 @@ public class ECprojectileActor : MonoBehaviour {
     int seq = 0;
 
 
-	// Use this for initialization
 
-	
-	// Update is called once per frame
-	void Update ()
+    private void OnEnable()
+    {
+        MainGameContent.Fire_act += MainGameContent_Fire_act;
+    }
+
+    private void MainGameContent_Fire_act()
+    {
+        Fire();
+    }
+
+    private void OnDisable()
+    {
+        MainGameContent.Fire_act -= MainGameContent_Fire_act;
+    }
+
+
+    void Update ()
     {
         //Movement
         //if(Input.GetButton("Horizontal"))
@@ -82,30 +95,30 @@ public class ECprojectileActor : MonoBehaviour {
         //    Switch(1);
         //}
 
-	    if(Input.GetButtonDown("Fire1"))
-        {
-            firing = true;
-            Fire();
-        }
-        if (Input.GetButtonUp("Fire1"))
-        {
-            firing = false;
-            firingTimer = 0;
-        }
+	    //if(Input.GetButtonDown("Fire1"))
+     //   {
+     //       firing = true;
+     //       Fire();
+     //   }
+     //   if (Input.GetButtonUp("Fire1"))
+     //   {
+     //       firing = false;
+     //       firingTimer = 0;
+     //   }
 
-        if (bombList[bombType].rapidFire && firing)
-        {
-            if(firingTimer > bombList[bombType].rapidFireCooldown+rapidFireDelay)
-            {
-                Fire();
-                firingTimer = 0;
-            }
-        }
+     //   if (bombList[bombType].rapidFire && firing)
+     //   {
+     //       if(firingTimer > bombList[bombType].rapidFireCooldown+rapidFireDelay)
+     //       {
+     //           Fire();
+     //           firingTimer = 0;
+     //       }
+     //   }
 
-        if(firing)
-        {
-            firingTimer += Time.deltaTime;
-        }
+     //   if(firing)
+     //   {
+     //       firingTimer += Time.deltaTime;
+     //   }
 	}
 
     public void Switch(int value)

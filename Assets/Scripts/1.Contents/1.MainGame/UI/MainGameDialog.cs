@@ -11,7 +11,7 @@ public class MainGameDialog : IDialog
     MainGameContent _MainGameContent;
     Text Start_txt;
     RectTransform Tile;
-    RectTransform[] Tiles = new RectTransform[6];
+    List<RectTransform> Tiles = new List<RectTransform>();
 
 
     #region Framework
@@ -24,9 +24,9 @@ public class MainGameDialog : IDialog
 
         Tile = transform.GetChild(2).GetChild(0).GetChild(1).GetComponent<RectTransform>();
 
-        for (int i = 0; i < Tiles.Length; i++)
+        for (int i = 0; i < 6; i++)
         {
-            Tiles[i] = Tile.GetChild(i).GetComponent<RectTransform>();
+            Tiles.Add(Tile.GetChild(i).GetComponent<RectTransform>());
         }
         
     }
@@ -36,7 +36,7 @@ public class MainGameDialog : IDialog
         Debug.Log("MainGameDialog _OnLoadComplete");
         Start_txt.gameObject.SetActive(false);
         Tile.gameObject.SetActive(false);
-        for (int i = 0; i < Tiles.Length; i++)
+        for (int i = 0; i < Tiles.Count; i++)
         {
             Tiles[i].GetChild(0).GetChild(0).GetComponent<Image>().sprite = Tile_sp[(int)_MainGameContent._TilesList[i].Right];
             Tiles[i].GetChild(1).GetChild(0).GetComponent<Image>().sprite = Tile_sp[(int)_MainGameContent._TilesList[i].Left];
@@ -57,11 +57,12 @@ public class MainGameDialog : IDialog
 
     void _AddEvent()
     {
-
+        MainGameContent.UpdateTileList_act += MainGameContent_UpdateTileList_act;
     }
+
     void _RemoveEvent()
     {
-
+        MainGameContent.UpdateTileList_act -= MainGameContent_UpdateTileList_act;
     }
     #endregion
 
@@ -79,6 +80,61 @@ public class MainGameDialog : IDialog
         Start_txt.gameObject.SetActive(false);
         Tile.gameObject.SetActive(true);
         StartGame_act?.Invoke();
+    }
+
+
+
+    private void MainGameContent_UpdateTileList_act()
+    {
+        //StopAllCoroutines();
+        StartCoroutine(_cMoveTiles(0.2f));
+    }
+
+    int SetNum = 0;
+    
+    IEnumerator _cMoveTiles(float duration)
+    {
+
+        Tiles[0].gameObject.SetActive(false);
+        
+        Tiles[0].anchoredPosition = new Vector2(0, 1450);
+        Tiles[0].GetChild(0).GetComponent<RectTransform>().anchoredPosition = new Vector2(395, -246);
+        Tiles[0].GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector2(-395, -246);
+        Tiles[0].gameObject.SetActive(true);
+
+        for (int i = 0; i < 5; i++)
+        { 
+            var Tmpe = Tiles[i];
+            Tiles[i] = Tiles[i + 1];
+            Tiles[i + 1] = Tmpe;
+        }
+        float time = 0;        
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+
+            for (int i = 0; i < 6; i++)
+            {
+                Tiles[i].anchoredPosition = Vector2.Lerp(new Vector2(0, i * 250 + 250), new Vector2(0, (i-1) * 250 + 250) , time/ duration);
+                if (i == 0)
+                {
+                    Tiles[i].GetChild(0).GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(new Vector2(395, -246) , new Vector2(335, -246) , time/ duration);
+                    Tiles[i].GetChild(1).GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(new Vector2(-395, -246), new Vector2(-335, -246), time / duration);
+                }            
+            }
+            yield return null;
+        }
+
+        yield return new WaitForEndOfFrame();
+
+        for (int i = 0; i < Tiles.Count; i++)
+        {
+            Tiles[i].GetChild(0).GetChild(0).GetComponent<Image>().sprite = Tile_sp[(int)_MainGameContent._TilesList[i].Right];
+            Tiles[i].GetChild(1).GetChild(0).GetComponent<Image>().sprite = Tile_sp[(int)_MainGameContent._TilesList[i].Left];
+        }
+
+        yield return null;
+
     }
 
 
