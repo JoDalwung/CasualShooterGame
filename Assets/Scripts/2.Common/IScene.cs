@@ -29,7 +29,7 @@ public class IScene : MonoBehaviour
             if (Loading)
             {
                 progress = Mathf.MoveTowards(progress, asyncLoad.progress, Time.deltaTime);
-                LoadProgress_txt.text = $"{progress * 100}%";
+                LoadProgress_txt.text = (progress * 100).ToString("F0")+"%";
                 if (progress >= 0.9f)
                 {
                     // 로딩창 디자인에따라 커스텀

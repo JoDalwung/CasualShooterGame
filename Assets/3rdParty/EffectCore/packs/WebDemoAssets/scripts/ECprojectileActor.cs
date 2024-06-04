@@ -69,58 +69,6 @@ public class ECprojectileActor : MonoBehaviour {
         MainGameContent.Fire_act -= MainGameContent_Fire_act;
     }
 
-
-    void Update ()
-    {
-        //Movement
-        //if(Input.GetButton("Horizontal"))
-        //{
-        //    if (Input.GetAxis("Horizontal") < 0)
-        //    {
-        //        gameObject.transform.Rotate(Vector3.up, -25 * Time.deltaTime);
-        //    }
-        //    else
-        //    {
-        //        gameObject.transform.Rotate(Vector3.up, 25 * Time.deltaTime);
-        //    }
-        //}
-
-        //BULLETS
-        //if (Input.GetKeyDown(KeyCode.Q))
-        //{
-        //    Switch(-1);
-        //}
-        //if (Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.E))
-        //{
-        //    Switch(1);
-        //}
-
-	    //if(Input.GetButtonDown("Fire1"))
-     //   {
-     //       firing = true;
-     //       Fire();
-     //   }
-     //   if (Input.GetButtonUp("Fire1"))
-     //   {
-     //       firing = false;
-     //       firingTimer = 0;
-     //   }
-
-     //   if (bombList[bombType].rapidFire && firing)
-     //   {
-     //       if(firingTimer > bombList[bombType].rapidFireCooldown+rapidFireDelay)
-     //       {
-     //           Fire();
-     //           firingTimer = 0;
-     //       }
-     //   }
-
-     //   if(firing)
-     //   {
-     //       firingTimer += Time.deltaTime;
-     //   }
-	}
-
     public void Switch(int value)
     {
             bombType += value;
