@@ -244,8 +244,6 @@ public class MainGameContent : IContent
             _CurrentScore += BonusScorePoint;
 
         AddScore_act?.Invoke(_CurrentScore);
-
-        Debug.Log("_AddScore");
     }
     void _AddPenalty()
     {

@@ -9,7 +9,9 @@ public class GameManager : IScene
     protected override void _OnLoadComplete()
     {
         base._OnLoadComplete();
+#if  !UNITY_WEBGL || UNITY_EDITOR      
         _StartLogin();
+#endif
         ActiveScene(EntryScene , false);
     }
     protected override void _OnEnter() => _AddEvent();
@@ -24,7 +26,11 @@ public class GameManager : IScene
         LobbyDialog.LobbyDialog_GameStartBtn_act -= LobbyDialog_LobbyDialog_GameStartBtn_act;
         MainGameDialog.LeaveScene_act -= MainGameDialog_LeaveMainGameScene_act;
     }
+
+#if !UNITY_WEBGL || UNITY_EDITOR
     void _StartLogin() => PlayerInfo.Instance.LoadScore();
+#endif
+
     private void LobbyDialog_LobbyDialog_GameStartBtn_act() => ActiveScene(SceneName.MainGameScene, true);
     private void MainGameDialog_LeaveMainGameScene_act() => ActiveScene(SceneName.LobbyScene, false);
 }

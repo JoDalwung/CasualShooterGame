@@ -12,7 +12,6 @@ public class MainGameDialog : IDialog
     public static event System.Action ReStart_act;
     public Sprite[] Tile_sp; 
     MainGameContent _MainGameContent;
-    GameManager _GameManager;
     Text _Start_txt , _Score_txt , _Timer_txt;
     RectTransform _Tile;
     List<RectTransform> _TileList = new List<RectTransform>();
@@ -61,9 +60,7 @@ public class MainGameDialog : IDialog
     #endregion
     void _Caching()
     {
-        _GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        _MainGameContent = GameObject.Find("MainGameContent").GetComponent<MainGameContent>();
-        
+        _MainGameContent = GameObject.Find("MainGameContent").GetComponent<MainGameContent>();       
         _Left_btn = transform.GetChild(1).GetChild(0).GetChild(0).GetComponent<Button>();
         _Left_btn.onClick.AddListener(() => ButtonTouch_act?.Invoke(true));
 
@@ -314,7 +311,9 @@ public class MainGameDialog : IDialog
         }
         PlayerInfo.Instance.ScoreList.Sort();
         PlayerInfo.Instance.ScoreList.Reverse();
+#if !UNITY_WEBGL || UNITY_EDITOR
         PlayerInfo.Instance.SaveScore();
+#endif
     }
 }
 

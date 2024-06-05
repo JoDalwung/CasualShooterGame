@@ -60,6 +60,12 @@ public class LobbyDialog : IDialog
     }
     void _Init()
     {
+#if !UNITY_WEBGL || UNITY_EDITOR
+        _GameExit_btn.gameObject.SetActive(true);
+#else
+        _GameExit_btn.gameObject.SetActive(false);
+#endif
+
         _First_view_rect.gameObject.SetActive(false);
         _Second_view_rect.gameObject.SetActive(false);
         _Popup_Noti_rect.gameObject.SetActive(false);

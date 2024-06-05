@@ -1,4 +1,6 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
 using System.IO;
+#endif
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +13,8 @@ public class PlayerInfo : Singletion<PlayerInfo>
 {   
     public bool PlzAnyKey = false;
     public List<int> ScoreList = new List<int>();
+
+#if !UNITY_WEBGL || UNITY_EDITOR
     public void SaveScore()
     {
         PlayerScore data = new PlayerScore();
@@ -24,4 +28,5 @@ public class PlayerInfo : Singletion<PlayerInfo>
         PlayerScore data = JsonUtility.FromJson<PlayerScore>(json);
         ScoreList = data.ScoreDataList;
     }
+#endif
 }
