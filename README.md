@@ -8,22 +8,16 @@
 ![image](https://github.com/JoDalwung/CasualShooterGame/assets/47405389/966fe27c-a266-43d2-9e50-4e864ef65e0e)
 
 
-[슬레이어키우기 공식카페 이미지]
+레퍼런스 : [슬레이어키우기 공식카페 이미지]
 
 
 
 ![bandicam 2024-02-28 01-20-33-292](https://github.com/JoDalwung/CasualShooterGame/assets/47405389/f378f8c0-7d10-4439-ac66-4958120e8956)
 
 
-버전 : unity - 2021.3.33f1 / BaseFrameWork - 0.0.0
+버전 : unity - 2021.3.33f1
 
-달성목표 : "슬레이어키우기" 미니게임 이벤트에 출시된 컨탠츠를 확장하여 구현해보는게 목표
 
-시작날짜 : 24.02.27
-
-종료날짜 : -
-
-참여인원 : 프로그래머 1명
 
 
 
