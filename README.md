@@ -1,4 +1,4 @@
-![bandicam 2024-06-05 22-30-53-062 (1)](https://github.com/JoDalwung/CasualShooterGame/assets/47405389/8bfb2237-84c3-477b-9400-69b34d6501ad)# Game
+
 좌우 버튼조작만을 이용한 미니 슈팅게임
 
 
