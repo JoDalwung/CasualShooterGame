@@ -5,12 +5,11 @@ using UnityEngine.UI;
 
 public class MainGameDialog : IDialog
 {
-    //public static event System.Action StartGame_act;
     public static event System.Action StartBonusTime_act;
     public static event System.Action<bool> StartGame_act;
     public static event System.Action LeaveScene_act;
     public static event System.Action<bool> ButtonTouch_act;
-
+    public static event System.Action ReStart_act;
     public Sprite[] Tile_sp; 
     MainGameContent _MainGameContent;
     GameManager _GameManager;
@@ -22,16 +21,12 @@ public class MainGameDialog : IDialog
     Slider _BonusTime_Slider;
     Button _Sound_btn, _Pause_btn;
     Button _Right_btn, _Left_btn;
-
     //popup
     RectTransform _TimeOver_PopUp_rect, _Pause_PopUp_rect;
-
     Button _TimeOver_PopUp_Home_btn, _TimeOver_PopUp_Restart_btn, _TimeOver_PopUp_Rank_btn;
     Text _TimeOver_PopUp_Score_txt;
-
     Button _Pause_PopUp_Home_btn, _Pause_PopUp_Play_btn, _Pause_PopUp_Rank_btn;
     Text _Pause_PopUp_Score_txt;
-
     #region Framework
     protected override void _OnLoad()
     {
@@ -284,9 +279,8 @@ public class MainGameDialog : IDialog
     }
     void _TimeOver_PopUp_Restart_btn_evt()
     {
-        // content 에서 tile 세팅을 먼저 해준다.
         StopAllCoroutines();
-        _MainGameContent.ReStartGame();
+        ReStart_act?.Invoke();
         // Ui init
         _Start_txt.gameObject.SetActive(false);
         _Score_txt.text = "0";
@@ -296,17 +290,15 @@ public class MainGameDialog : IDialog
         _TimeOver_PopUp_rect.gameObject.SetActive(false);
         _Pause_PopUp_rect.gameObject.SetActive(false);
         _Timer_txt.text = string.Format("{0:00} : {1:00}", Mathf.FloorToInt(_MainGameContent.GameTime / 60), Mathf.FloorToInt(_MainGameContent.GameTime % 60));
-
         for (int i = 0; i < _TileList.Count; i++)
         {
             _TileList[i].GetChild(0).GetChild(0).GetComponent<Image>().sprite = Tile_sp[(int)_MainGameContent._TilesList[i].Right];
             _TileList[i].GetChild(1).GetChild(0).GetComponent<Image>().sprite = Tile_sp[(int)_MainGameContent._TilesList[i].Left];
         }
-
         StartCoroutine(_cStartGame());
-
-
     }
+    
+    
     void _SaveScore()
     {
         if (PlayerInfo.Instance.ScoreList.Count < 10)
@@ -324,8 +316,5 @@ public class MainGameDialog : IDialog
         PlayerInfo.Instance.ScoreList.Reverse();
         PlayerInfo.Instance.SaveScore();
     }
-
-
-
 }
 

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,12 +8,9 @@ public class PlayerScore
 }
 
 public class PlayerInfo : Singletion<PlayerInfo>
-{
-    
+{   
     public bool PlzAnyKey = false;
     public List<int> ScoreList = new List<int>();
-
-
     public void SaveScore()
     {
         PlayerScore data = new PlayerScore();
@@ -22,15 +18,10 @@ public class PlayerInfo : Singletion<PlayerInfo>
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(Application.streamingAssetsPath + "/PlayerScoreFile.json",json);
     }
-
     public void LoadScore()
     { 
         string json = File.ReadAllText(Application.streamingAssetsPath + "/PlayerScoreFile.json");
         PlayerScore data = JsonUtility.FromJson<PlayerScore>(json);
-
         ScoreList = data.ScoreDataList;
-
     }
-
-
 }
