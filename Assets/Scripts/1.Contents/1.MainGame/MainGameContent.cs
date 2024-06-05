@@ -25,37 +25,41 @@ public class Tiles
 public class MainGameContent : IContent
 {
 
+    public static event System.Action Fire_act;
+    public static event System.Action UpdateTileList_act;
+    public static event System.Action<float> AddBonusValue_act;
+    public static event System.Action<int> AddScore_act;
+    public static event System.Action<float> AddPenalty_act;
+    public static event System.Action LeaveMainGameScene_act;
+
+
     public IDialogLoader dialogLoader;
     public List<Tiles> _TilesList = new List<Tiles>();
-    bool _StartGame = false;
-    
-    Camera _MainCam;
-    Transform _CamPoint_1, _CamPoint_2;
-
     public float GameTime = 60.0f;
     public float BonusTimer = 10.0f;
-
     public int NomalScorePoint = 10;
     public int BonusScorePoint = 50;
 
 
+    bool _StartGame = false;
     bool _BonusTime = false;
     int _CurrentScore = 0;
-
-
+    
+    Camera _MainCam;
+    Transform _CamPoint_1, _CamPoint_2;
+    
     #region Framework
     protected override void _OnLoad()
     {
         dialogLoader.LoadDialog();
         _StartGame = false;
-        _SetTileList();       
+        _InitTileList();       
         _Caching();
     }
     protected override void _OnLoadComplete()
     {
         StartCoroutine(_cSetUpMainCamPos());
     }
-
     protected override void _OnEnter()
     {
         StartCoroutine(_cUpdate());
@@ -66,31 +70,28 @@ public class MainGameContent : IContent
         dialogLoader.UnLoadDialog();
         _RemoveEvent();
     }
-
-    void _AddEvent()
+    private void _AddEvent()
     {
-        MainGameDialog.StartGame_act += MainGameDialog_StartGame_act;
         MainGameDialog.StartBonusTime_act += MainGameDialog_StartBonusTime_act;
+        MainGameDialog.StartGame_act += MainGameDialog_StartGame_act;
+        MainGameDialog.ButtonTouch_act += MainGameDialog_ButtonTouch_act;
+
     }
 
 
 
-    void _RemoveEvent()
+    private void _RemoveEvent()
     {
-        MainGameDialog.StartGame_act -= MainGameDialog_StartGame_act; 
-        MainGameDialog.StartBonusTime_act -= MainGameDialog_StartBonusTime_act;
+        MainGameDialog.StartBonusTime_act -= MainGameDialog_StartBonusTime_act; 
+        MainGameDialog.StartGame_act -= MainGameDialog_StartGame_act;
+        MainGameDialog.ButtonTouch_act -= MainGameDialog_ButtonTouch_act;
+        
     }
     #endregion
 
-    void _Caching()
+    void _InitTileList()
     {
-        _MainCam = transform.GetChild(1).GetChild(0).GetComponent<Camera>();
-        _CamPoint_1 = transform.GetChild(1).GetChild(1).GetComponent<Transform>();
-        _CamPoint_2 = transform.GetChild(1).GetChild(2).GetComponent<Transform>();
-    }
-
-    void _SetTileList()
-    {
+        _CurrentScore = 0;
         for (int i = 0; i < 6; i++)
         {
             int RandomNum = Random.Range(0, 2);
@@ -103,31 +104,27 @@ public class MainGameContent : IContent
             Debug.Log($"{i} : left = {Left} / right = {Right}");
         }
     }
-
+    private void _Caching()
+    {
+        _MainCam = transform.GetChild(1).GetChild(0).GetComponent<Camera>();
+        _CamPoint_1 = transform.GetChild(1).GetChild(1).GetComponent<Transform>();
+        _CamPoint_2 = transform.GetChild(1).GetChild(2).GetComponent<Transform>();
+    }  
     IEnumerator _cSetUpMainCamPos()
     {
         float time = 0;
         while (time < 1.5f)
         {
             time += Time.deltaTime;
-
             _MainCam.transform.position = Vector3.Lerp(_CamPoint_1.position, _CamPoint_2.position, time / 1.5f);
             _MainCam.transform.eulerAngles = Vector3.Lerp(_CamPoint_1.eulerAngles, _CamPoint_2.eulerAngles, time / 1.5f);
-
             yield return null;
         }
 
-
         dialogLoader.ShowIdxDialog();
     }
-
-    private void MainGameDialog_StartGame_act() => _StartGame = true;
-
-
-
-
-    bool _KeyDownCheck = true;
-
+    private void MainGameDialog_StartGame_act(bool obj) => _StartGame = obj;
+    private bool _KeyDownCheck = true;
     IEnumerator _cUpdate()
     {
         while (true)
@@ -135,15 +132,11 @@ public class MainGameContent : IContent
             if (_StartGame && _KeyDownCheck) 
             {
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
-                {
-                    _KeyDownCheck = false;
-
+                {                   
                     _LeftKeyDownEvent();
                 }
                 else if (Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    _KeyDownCheck = false;
-
+                {                   
                     _RightKeyDownEvent();
                 }
             }
@@ -151,18 +144,14 @@ public class MainGameContent : IContent
         }
 
     }
-
     IEnumerator _WaitforKeyDown(float time)
     {
         yield return new WaitForSecondsRealtime(time);
         _KeyDownCheck = true;
     }
-
-    public static event System.Action Fire_act;
-
-    void _RightKeyDownEvent()
+    private void _RightKeyDownEvent()
     {
-        
+        _KeyDownCheck = false;
         if (_TilesList[0].Right == Tile_type.Fire || _TilesList[0].Right == Tile_type.Bonus)
         {
             StartCoroutine(_WaitforKeyDown(0.1f));
@@ -179,10 +168,9 @@ public class MainGameContent : IContent
         else
             _UpdateTileList();
     }
-
-    void _LeftKeyDownEvent()
+    private void _LeftKeyDownEvent()
     {
-        
+        _KeyDownCheck = false;
         if (_TilesList[0].Left == Tile_type.Fire || _TilesList[0].Left == Tile_type.Bonus)
         {
             StartCoroutine(_WaitforKeyDown(0.1f));
@@ -199,10 +187,7 @@ public class MainGameContent : IContent
         else
             _UpdateTileList();
     }
-
-    public static event System.Action UpdateTileList_act;
-
-    void _UpdateTileList()
+    private void _UpdateTileList()
     {
         _TilesList.RemoveAt(0);
         int RandomNum = Random.Range(0, 2);
@@ -213,8 +198,7 @@ public class MainGameContent : IContent
         _TilesList.Add(new Tiles(Right, Left));
         UpdateTileList_act?.Invoke();
     }
-
-    void _UpdateBonusTileList()
+    private void _UpdateBonusTileList()
     {
         for (int i = 0; i < _TilesList.Count; i++)
         {
@@ -223,10 +207,7 @@ public class MainGameContent : IContent
         }
         UpdateTileList_act?.Invoke();
     }
-
-    public static event System.Action<float> AddBonusValue_act;
-    public static event System.Action<int> AddScore_act;
-    void _AddScore()
+    private void _AddScore()
     {
         Fire_act?.Invoke();
 
@@ -243,29 +224,60 @@ public class MainGameContent : IContent
         
         Debug.Log("_AddScore");
     }
-
     private void MainGameDialog_StartBonusTime_act()
     {
         StartCoroutine(_cBonusTime());
     }
-
-
     IEnumerator _cBonusTime()
     {
         _BonusTime = true;
         yield return new WaitForSeconds(BonusTimer);
         _BonusTime = false;
     }
-
-
-    public static event System.Action<float> AddPenalty_act;
-
-    void _AddPenalty()
+    private void _AddPenalty()
     {
         AddPenalty_act?.Invoke(1.0f);
         AddBonusValue_act?.Invoke(-0.1f);
         Debug.Log("_AddPenalty");
     }
+    public void ReStartGame()
+    {
+        StopAllCoroutines();
+        StartCoroutine(_cUpdate());
+        _CurrentScore = 0;
+        _BonusTime = false;
+        for (int i = 0; i < _TilesList.Count; i++)
+        {
+            int RandomNum = Random.Range(0, 2);
+            Tile_type Right;
+            Tile_type Left;
 
+            Right = RandomNum == 0 ? Tile_type.Fire : Tile_type.Delay;
+            Left = RandomNum == 1 ? Tile_type.Fire : Tile_type.Delay;
+            _TilesList[i] = new Tiles(Right, Left);
+            Debug.Log($"{i} : left = {Left} / right = {Right}");
+        }
+    }
+    public string GetCurrentScore()
+    {
+        return _CurrentScore.ToString();
+    }
+    private void MainGameDialog_ButtonTouch_act(bool obj)
+    {
+        if (_StartGame && _KeyDownCheck)
+        {
+            if (obj)
+            {
+                //left
+                _LeftKeyDownEvent();
+            }
+            else
+            {
+                //right
+                _RightKeyDownEvent();
+            }
+
+        }
+    }
 }
 

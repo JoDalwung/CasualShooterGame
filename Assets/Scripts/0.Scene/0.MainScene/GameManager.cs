@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class GameManager : IScene
 {
-
-    // 어떤식으로 쓸지 미정
-    public List<IScene.SceneName> SceneList;    
     //
-
+    //
     public IScene.SceneName EntryScene;
-
-
     protected override void _OnLoad()
     {
         base._OnLoad();
@@ -21,6 +16,7 @@ public class GameManager : IScene
     protected override void _OnLoadComplete()
     {
         base._OnLoadComplete();
+        _StartLogin();
         ActiveScene(EntryScene , false);
     }
 
@@ -31,15 +27,26 @@ public class GameManager : IScene
     void _AddEvent()
     {
         LobbyDialog.LobbyDialog_GameStartBtn_act += LobbyDialog_LobbyDialog_GameStartBtn_act;
+        MainGameDialog.LeaveScene_act += MainGameDialog_LeaveMainGameScene_act;
 
     }
 
     void _RemoveEvent()
     {
         LobbyDialog.LobbyDialog_GameStartBtn_act -= LobbyDialog_LobbyDialog_GameStartBtn_act;
+        MainGameDialog.LeaveScene_act -= MainGameDialog_LeaveMainGameScene_act;
+    }
+
+    void _StartLogin()
+    {
+        //ScoreData.ScoreDataList.Sort();
+        //ScoreData.ScoreDataList.Reverse();           
+        //PlayerInfo.Instance.ScoreList = ScoreData.ScoreDataList;
+
+        PlayerInfo.Instance.LoadScore();
     }
 
     private void LobbyDialog_LobbyDialog_GameStartBtn_act() => ActiveScene(SceneName.MainGameScene, true);
-
+    private void MainGameDialog_LeaveMainGameScene_act() => ActiveScene(SceneName.LobbyScene, false);
 
 }

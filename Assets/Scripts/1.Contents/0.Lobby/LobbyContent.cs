@@ -3,20 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LobbyContent : IContent
-{
-    
+{    
     public IDialogLoader dialogLoader;
-
     public static event System.Action PlzAnyKey_act;
-
-
     Transform _SunLight;
     Transform _CamPoint_1, _CamPoint_2;
     Camera _MainCam;
 
-
-
-
+    #region Framework
     protected override void _OnLoad()
     {
         dialogLoader.LoadDialog();
@@ -38,9 +32,9 @@ public class LobbyContent : IContent
         dialogLoader.UnLoadDialog();
         _RemoveEvent();
     }
-
     void _AddEvent(){}
     void _RemoveEvent(){}
+    #endregion
 
     void _Caching()
     {
@@ -49,7 +43,6 @@ public class LobbyContent : IContent
         _CamPoint_1 = transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<Transform>();
         _CamPoint_2 = transform.GetChild(1).GetChild(1).GetChild(1).GetComponent<Transform>();          
     }
-
     void _Init()
     {
         if (!PlayerInfo.Instance.PlzAnyKey)
@@ -62,11 +55,7 @@ public class LobbyContent : IContent
             _MainCam.transform.position = _CamPoint_2.position;
             _MainCam.transform.eulerAngles = _CamPoint_2.eulerAngles;
         }
-
-
     }
-
-
     IEnumerator _cUpdate()
     {
         Vector3 _SunDirv3 = new Vector3(45.0f, 0, 0);
@@ -85,8 +74,6 @@ public class LobbyContent : IContent
         }
         
     }
-
-
     IEnumerator _cfocus(bool focus)
     {
         float time = 0;
@@ -105,9 +92,5 @@ public class LobbyContent : IContent
         }
         PlzAnyKey_act?.Invoke();
     }
-
-
-
-
 
 }
